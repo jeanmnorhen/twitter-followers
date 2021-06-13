@@ -9,6 +9,7 @@ export default async (req, res) => { // 2
       const htmlString = await response.text()
       const $ = cheerio.load(htmlString)
       const searchContext = `a[id='TeleVendas']`
+      console.log("teste");
       const followerCountString = $(searchContext)
         .text()
         .match(/[0-9]/gi)
