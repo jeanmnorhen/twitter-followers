@@ -28,7 +28,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1>Fetch A Twitter Follower</h1>
+        <h1>Minerando o primeiro produto</h1>
         <form onSubmit={handleSubmit}>
           <label>
             Enter a Twitter username
