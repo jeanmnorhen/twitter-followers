@@ -5,20 +5,16 @@ export default async (req, res) => { // 2
     const username = req.body.TWuser
 
     try { // 4
-      const response = await fetch(`https://www.casasbahia.com.br/`)
-      const htmlString = await response.text()
-      const $ = cheerio.load(htmlString)
-      const searchContext = `a[id='TeleVendas']`
-      console.log("teste");
-      const followerCountString = $(searchContext)
-        .text()
-        .match(/[0-9]/gi)
-        .join('')
-
+      const $ = cheerio.load(`https://www.casasbahia.com.br/`)
+      $('a.lnkPop').each((i, element) => {
+        const cheerioElement = $(element);
+        const preco = cheerioElement.find('span');
+        console.log(preco);
+      });
       res.statusCode = 200
       return res.json({
         user: username,
-        followerCount: String(followerCountString),
+        followerCount: String(preco),
       })
     } catch (e) { // 5
       res.statusCode = 404

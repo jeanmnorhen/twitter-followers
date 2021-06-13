@@ -1,25 +1,35 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import React from 'react'
+const axios = require('axios');
+const cheerio = require('cheerio');
+const url = 'https://www.casasbahia.com.br/';
+
 
 export default function Home() {
   const [inputValue, setInputValue] = React.useState('')
   const [userFollowers, setUserFollowers] = React.useState({})
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    fetch('/api/followers', {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ TWuser: inputValue }),
-    })
-      .then((res) => res.json())
-      .then((userData) => {
-        setUserFollowers(userData)
-      })
-  }
+  axios(url).then(response => {
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const tabelaStatus = $('a#TeleVendas');
+    const tabelaJogador = [];
+    tabelaStatus.each(function(){
+        const nomeJogador = $(this).find('.jogador-nome').text();
+        const posicaoJogador = $(this).find('.jogador-posicao').text();
+        const numeroGols = $(this).find('.jogador-gols').text();
+        const timeJogador = $(this).find('.jogador-escudo > img').attr('alt');
+        tabelaJogador.push({
+            nomeJogador,
+            posicaoJogador,
+            numeroGols,
+            timeJogador
+        });
+    });
+    console.log(tabelaStatus);
+    
+}).catch(console.error);
   return (
     <div className={styles.container}>
       <Head>
@@ -29,21 +39,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1>Minerando o primeiro produto</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Enter a Twitter username
-            <input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </label>
-          <button>Submit</button>
-        </form>
-        {userFollowers.followerCount >= 0 ? (
-          <p>Followers: {userFollowers.followerCount}</p>
-        ) : (
-          <p>{userFollowers.error}</p>
-        )}
+        <p>jogadores: </p>
+
       </main>
     </div>
   )
