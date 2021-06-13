@@ -5,10 +5,10 @@ export default async (req, res) => { // 2
     const username = req.body.TWuser
 
     try { // 4
-      const response = await fetch(`https://mobile.twitter.com/${username}`)
+      const response = await fetch(`https://www.casasbahia.com.br/`)
       const htmlString = await response.text()
       const $ = cheerio.load(htmlString)
-      const searchContext = `a[href='/${username}/followers']`
+      const searchContext = `a[id='TeleVendas']`
       const followerCountString = $(searchContext)
         .text()
         .match(/[0-9]/gi)
@@ -17,7 +17,7 @@ export default async (req, res) => { // 2
       res.statusCode = 200
       return res.json({
         user: username,
-        followerCount: Number(followerCountString),
+        followerCount: String(followerCountString),
       })
     } catch (e) { // 5
       res.statusCode = 404
