@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Fetch Twitter Follower</title>
+        <title>Minerando o primeiro produto</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
